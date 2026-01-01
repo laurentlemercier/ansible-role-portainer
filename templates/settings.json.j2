@@ -1,20 +1,20 @@
-#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+#jinja2: lstrip_blocks: True, trim_blocks: True
 {
   "TemplatesURL": "{{ templates_url }}",
   "LogoURL": "{{ company_logo_url }}",
   "DisplayDonationHeader": false,
   "DisplayExternalContributors": false,
-  "AuthenticationMethod": {{ auth_method }},
+  "AuthenticationMethod": {{ auth_method | int | default(1)}},
   {% if auth_method == 2 %}
   "LDAPSettings": {
     "ReaderDN": "{{ ldap_account }}",
     "Password": "{{ ldap_account_password }}",
     "URL": "{{ ldap_url }}:{{ ldap_port }}",
     "TLSConfig": {
-      "TLS": {{ tls_enabled }},
-      "TLSSkipVerify": {{ tls_skipverify }}
+      "TLS": "{{ tls_enabled }}",
+      "TLSSkipVerify": "{{ tls_skipverify }}"
     },
-    "StartTLS": {{ start_tls }},
+    "StartTLS": "{{ start_tls }}",
     "SearchSettings": [
       {
         "BaseDN": "{{ ldap_base_dn }}",
@@ -25,6 +25,6 @@
     "AutoCreateUsers": true
   },
   {% endif %}
-  "AllowBindMountsForRegularUsers": {{ allow_bindmounts_users }},
-  "AllowPrivilegedModeForRegularUsers": {{ allow_privileged_users }}
+  "AllowBindMountsForRegularUsers": {{ allow_bindmounts_users | bool | lower }},
+  "AllowPrivilegedModeForRegularUsers": {{ allow_privileged_users| bool | lower  }}
 }

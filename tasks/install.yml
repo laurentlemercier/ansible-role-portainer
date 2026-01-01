@@ -25,7 +25,7 @@
     portainer_is_running: "{{ portainer_docker.container.State.Running }}"
 
 - set_fact:
-    portainer_endpoint: "http://{{ portainer_docker.container.NetworkSettings.IPAddress }}:{{ host_port }}/api"
+    portainer_endpoint: "http://{{ portainer_docker.container.NetworkSettings.Networks.bridge.IPAddress }}:{{ host_port }}/api"
 
 - name: "Check!!!"
   debug:
@@ -38,7 +38,7 @@
 
 - name: Wait for Portainer web interface to get available
   uri:
-    url: "http://{{ portainer_docker.container.NetworkSettings.IPAddress }}:{{ host_port }}"
+    url: "http://{{ portainer_docker.container.NetworkSettings.Networks.bridge.IPAddress }}:{{ host_port }}"
     method: GET
   register: wait_portainer_result
   until: wait_portainer_result is succeeded

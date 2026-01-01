@@ -21,20 +21,22 @@
       -H "Authorization: Bearer {{ (auth_token.content|from_json).jwt }}" \
       -F "Name={{ item.name }}" \
       -F "URL={{ item.url }}" \
+      -F "PublicURL={{item.PublicURL }}" \
       -F "EndpointCreationType=1"
-  args:
-    warn: false
+
+
   with_items:
     - "{{ endpoints | list }}"
   when: item.name not in portainer_known_endpoints
   register: response
   tags: [skip_ansible_lint]
 
-# - name: "Debug response"
-#   debug:
-#     msg: "Endpoint {{ item.item.name }}, Response: {{ item.stdout| default('{}')|from_json }}"
-#   with_items:
-#     - "{{ response.results }}"
+- name: "Debug response"
+  debug:
+    msg: "Endpoint {{ item.item.name }}, Response: {{ item.stdout| default('{}')|from_json }}"
+    verbosity: 1
+  with_items:
+    - "{{ response.results }}"
 
 - name: Verifying calls
   fail:

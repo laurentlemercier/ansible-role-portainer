@@ -1,6 +1,7 @@
 ---
-# - debug:
-#     msg: "{{ lookup('template', 'settings.json.j2') }}"
+- debug:
+    msg: "{{ lookup('template', 'settings.json.j2') | from_json | to_json }}"
+    verbosity: 1
 
 - name: Configure Portainer settings
   uri:
@@ -8,6 +9,8 @@
     method: PUT
     return_content: true
     headers:
-      Authorization: "{{ (auth_token.content|from_json).jwt }}"
+      Authorization: "Bearer {{ (auth_token.content|from_json).jwt }}"
     body_format: json
-    body: "{{ lookup('template','settings.json.j2') }}"
+    body: "{{ lookup('template','settings.json.j2') | from_json | to_json }}"
+
+
