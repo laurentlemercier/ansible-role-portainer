@@ -1,7 +1,9 @@
 #jinja2: lstrip_blocks: True, trim_blocks: True
 {
   "TemplatesURL": "{{ templates_url }}",
+  {% if company_logo_url != 'url_to_company_logo' %}
   "LogoURL": "{{ company_logo_url }}",
+  {% endif %}
   "DisplayDonationHeader": false,
   "DisplayExternalContributors": false,
   "AuthenticationMethod": {{ auth_method | int | default(1)}},
